@@ -47,11 +47,10 @@ def transcribe():
         # STEP 3: Call the transcribe_file method with the text payload and options
         response = deepgram.listen.prerecorded.v("1").transcribe_file(payload, options, timeout=300)
         transcription = json.loads(response.to_json(indent=4))['results']['channels'][0]['alternatives'][0]['transcript']
-
         # STEP 4: Print the response
         #print(response.to_json(indent=4))
         print(transcription)
-        lt = LibreTranslateAPI("https://libretranslate.com/translate")
+        lt = LibreTranslateAPI("http://localhost:5000")
         print(lt.translate(transcription, "en", "es"))
         
 
