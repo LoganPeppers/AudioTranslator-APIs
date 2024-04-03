@@ -12,6 +12,7 @@ from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
 #Includes the API calls needed for each operation.
 load_dotenv()
+__package__='apiCalls'
 
 #DeepGram first:
 #Path to the audio file
@@ -45,10 +46,11 @@ def transcribe():
         )
 
         # STEP 3: Call the transcribe_file method with the text payload and options
-        response = deepgram.listen.prerecorded.v("1").transcribe_file(payload, options, timeout=300)
-        transcription = json.loads(response.to_json(indent=4))['results']['channels'][0]['alternatives'][0]['transcript']
+        #response = deepgram.listen.prerecorded.v("1").transcribe_file(payload, options, timeout=300)
+        #transcription = json.loads(response.to_json(indent=4))['results']['channels'][0]['alternatives'][0]['transcript']
         # STEP 4: Print the response
         #print(response.to_json(indent=4))
+        transcription = "My name is Logan"
         print(transcription)
         lt = LibreTranslateAPI("http://localhost:5000")
         print(lt.translate(transcription, "en", "es"))
@@ -63,25 +65,18 @@ def transcribe():
 #End of DG example code   
 
 
-#authenticator = IAMAuthenticator('{apikey}')
-#text_to_speech = TextToSpeechV1(
-#    authenticator=authenticator
-#)
+authenticator = IAMAuthenticator('ApiKey-3fef24ee-d815-4cea-9d8f-31eea27ccdd9')
+text_to_speech = TextToSpeechV1(
+    authenticator=authenticator
+)
 
-#text_to_speech.set_service_url('https://api.us-south.text-to-speech.watson.cloud.ibm.com')
+text_to_speech.set_service_url('https://api.us-south.text-to-speech.watson.cloud.ibm.com')
 
-#IBM Synthesize audio method example
-#def synthesize(
-#        self,
-#        text: str,
-#        *,
-#        accept: str = None,
-#        voice: str = None,
-#        customization_id: str = None,
-#        spell_out_mode: str = None,
-#        rate_percentage: int = None,
-#        pitch_percentage: int = None,
-#        **kwargs
-#    ) -> DetailedResponse
+#with open('hello_world.mp3', 'wb') as audio_file:
+#    audio_file.write(
+#        text_to_speech.synthesize(
+#            transcription,
+ #           accept='audio/mp3'        
+ #       ).get_result().content)
 
 
