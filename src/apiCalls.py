@@ -47,14 +47,15 @@ def transcribe():
         )
 
         # STEP 3: Call the transcribe_file method with the text payload and options
-        #response = deepgram.listen.prerecorded.v("1").transcribe_file(payload, options, timeout=300)
-        #transcription = json.loads(response.to_json(indent=4))['results']['channels'][0]['alternatives'][0]['transcript']
+        response = deepgram.listen.prerecorded.v("1").transcribe_file(payload, options, timeout=300)
+        transcription = json.loads(response.to_json(indent=4))['results']['channels'][0]['alternatives'][0]['transcript']
         # STEP 4: Print the response
-        #print(response.to_json(indent=4))
-        transcription = "My name is Logan"
+        print(response.to_json(indent=4))
+        #transcription = "My name is Logan"
         print(transcription)
-        #lt = LibreTranslateAPI("http://localhost:5000")
-        #print(lt.translate(transcription, "en", "es"))
+        lt = LibreTranslateAPI("http://localhost:5000")
+        transcription = lt.translate(transcription, "en", "es")
+        print(transcription)
         
         authenticator = IAMAuthenticator('CyZMRAdIsyzrVR1uU1faeF2Z7Nst4mB-tyqzDr0NTVeS')
         text_to_speech = TextToSpeechV1(authenticator=authenticator)
