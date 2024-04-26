@@ -7,7 +7,8 @@ from deepgram import (
     FileSource,
 )
 from firstDraft import Ui_MainWindow
-from ibm_watson import TextToSpeechV1
+from ibm_watson import TextToSpeechV1 
+from ibm_watson import ApiException
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
 #Includes the API calls needed for each operation.
@@ -52,8 +53,20 @@ def transcribe():
         #print(response.to_json(indent=4))
         transcription = "My name is Logan"
         print(transcription)
-        lt = LibreTranslateAPI("http://localhost:5000")
-        print(lt.translate(transcription, "en", "es"))
+        #lt = LibreTranslateAPI("http://localhost:5000")
+        #print(lt.translate(transcription, "en", "es"))
+        
+        authenticator = IAMAuthenticator('CyZMRAdIsyzrVR1uU1faeF2Z7Nst4mB-tyqzDr0NTVeS')
+        text_to_speech = TextToSpeechV1(authenticator=authenticator)
+
+        text_to_speech.set_service_url('https://api.us-south.text-to-speech.watson.cloud.ibm.com')
+        with open('hello_world.mp3', 'wb') as audio_file:
+            audio_file.write(
+                text_to_speech.synthesize(
+                transcription,
+                voice='es-ES_EnriqueV3Voice',
+                accept='audio/mp3'        
+            ).get_result().content)
         
 
     except Exception as e:
@@ -63,20 +76,5 @@ def transcribe():
  #   main()        
 
 #End of DG example code   
-
-
-authenticator = IAMAuthenticator('ApiKey-3fef24ee-d815-4cea-9d8f-31eea27ccdd9')
-text_to_speech = TextToSpeechV1(
-    authenticator=authenticator
-)
-
-text_to_speech.set_service_url('https://api.us-south.text-to-speech.watson.cloud.ibm.com')
-
-#with open('hello_world.mp3', 'wb') as audio_file:
-#    audio_file.write(
-#        text_to_speech.synthesize(
-#            transcription,
- #           accept='audio/mp3'        
- #       ).get_result().content)
 
 
