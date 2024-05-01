@@ -8,7 +8,6 @@ from deepgram import (
 )
 from firstDraft import Ui_MainWindow
 from ibm_watson import TextToSpeechV1 
-from ibm_watson import ApiException
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
 #Includes the API calls needed for each operation.
@@ -21,15 +20,25 @@ audioFile = Ui_MainWindow.fileName
 transcription = ""
 translatedText = ""
 translatedAudio = ""
+keyDG = "" 
+keyIBM = ""
 
-API_KEY_DG = "9fd4fdef42b5772501a69cd6957a71e767eb1ef8"
+def getKeys(path):
+    global keyDG
+    global keyIBM 
+    keyFile = open(path, 'r')
+    keys = keyFile.read()
+    tokens = keys.split("\n")
+    keyDG = tokens[0]
+    keyIBM = tokens[1]
 
 
 #DG Transcribe Local File
 def transcribe():
     try:
         # STEP 1 Create a Deepgram client using the API key
-        deepgram = DeepgramClient(API_KEY_DG) 
+        getKeys("C:/Users/peppe/OneDrive/Desktop/keys.txt")
+        deepgram = DeepgramClient(keyDG) 
         
 
         with open(audioFile, "rb") as file:
@@ -57,7 +66,7 @@ def transcribe():
         transcription = lt.translate(transcription, "en", "es")
         print(transcription)
         
-        authenticator = IAMAuthenticator('CyZMRAdIsyzrVR1uU1faeF2Z7Nst4mB-tyqzDr0NTVeS')
+        authenticator = IAMAuthenticator(keyIBM)
         text_to_speech = TextToSpeechV1(authenticator=authenticator)
 
         text_to_speech.set_service_url('https://api.us-south.text-to-speech.watson.cloud.ibm.com')
