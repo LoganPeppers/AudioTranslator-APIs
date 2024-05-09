@@ -10,6 +10,8 @@
 import sys
 from src import apiCalls
 from PyQt5 import QtCore, QtGui, QtWidgets
+import tkinter
+from tkinter import ttk
 
 
 class Ui_MainWindow(object):
@@ -197,6 +199,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.uploadButton.clicked.connect(self.openFileDialog)
         self.submitButton.clicked.connect(apiCalls.transcribe)
+        
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -218,8 +221,20 @@ class Ui_MainWindow(object):
         print(fileName)
         apiCalls.audioFile = fileName
 
+    def resultsPopUp(eng, spa, path):
+        NORM_FONT = ("Helvetica", 10)
+        popup = tkinter.Tk()
+        popup.wm_title("Results")
+        label = ttk.Label(popup, text="Transcription: " + eng + "\nTranslation: " + spa + "\nPath To Audio File: " + path, font=NORM_FONT)
+        label.pack(side="top", fill="x", pady=10, padx=10)
+        B1 = ttk.Button(popup, text="Okay", command = popup.destroy)
+        B1.pack()
+        popup.mainloop()
+
 if __name__ == "__main__":
     import sys
+    import subprocess
+    subprocess.Popen("libretranslate")
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()

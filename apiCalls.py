@@ -78,7 +78,7 @@ def transcribe():
             ).get_result().content)
         
         
-        Ui_MainWindow.resultsPopUp(bTranscription, transcription, os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..')))
+        Ui_MainWindow.resultsPopUp(bTranscription, transcription, os.path.dirname(os.path.abspath(firstDraft)))
 
     except Exception as e:
         print(f"Exception: {e}")
